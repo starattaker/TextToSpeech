@@ -77,39 +77,44 @@ pip install -r requirements.txt
 #Launch App
 python app.py
 ```
-##👂 STT (Speech-to-Text)
+## 👂 STT (Speech-to-Text)
 
-Technology Used: OpenAI Whisper (Base Model)
-Library: openai-whisper + SpeechRecognition
+**Technology Used:** OpenAI Whisper (Base Model)  
+**Libraries:** `openai-whisper`, `SpeechRecognition`
 
-###How it works:
--Capture: When the user clicks the recording icon, the SpeechRecognition library activates the microphone and listens for voice input.
--Save: The captured audio is temporarily saved as a .wav file in the system's temp folder.
--Transcribe: The Python script passes this .wav file to the Whisper Model. Whisper is a deep learning model trained on 680,000 hours of multilingual data. It analyzes the audio waveforms and converts them into a text string (e.g., "Yes, please").
--Result: This text string is returned to the main app for checking.
+### How it works:
+- **Capture:** When the user clicks the recording icon, the `SpeechRecognition` library activates the microphone and listens for voice input.  
+- **Save:** The captured audio is temporarily saved as a `.wav` file in the system's temp folder.  
+- **Transcribe:** The Python script passes this `.wav` file to the Whisper model. Whisper (trained on 680,000+ hours of data) analyzes the audio waveform and converts it into a text string (e.g., “Yes, please”).  
+- **Result:** This text string is returned to the main app for validation.  
 
-##🗣️ TTS (Text-to-Speech)
+---
 
-###Technology Used: Microsoft Edge Neural Voices
-Library: edge-tts + pygame
+## 🗣️ TTS (Text-to-Speech)
 
-###How it works:
+**Technology Used:** Microsoft Edge Neural Voices  
+**Libraries:** `edge-tts`, `pygame`
 
--Request: When the AI needs to speak (e.g., "Excuse me, Madam"), the app sends this text to the edge-tts library.
--Generation: edge-tts communicates with Microsoft's online Neural TTS service (the same one used in the Edge browser's "Read Aloud" feature). This generates a high-quality, human-like audio stream.
--Playback: The audio is saved as a temporary .mp3 file. To avoid opening visible media players (like Windows Media Player), we use pygame.mixer, which is a game audio engine. It plays the file invisibly in the background.
+### How it works:
+- **Request:** When the AI needs to speak (e.g., “Excuse me, Madam”), the app sends this text to the `edge-tts` library.  
+- **Generation:** `edge-tts` communicates with Microsoft’s Neural TTS service to generate a high-quality, human-like audio stream.  
+- **Playback:** The audio is saved as a temporary `.mp3` file. `pygame.mixer` (a game audio engine) plays the audio *silently in the background* without opening external media players.  
 
-##🧠 NLP (Natural Language Processing)
+---
 
-Technology Used: Fuzzy Logic / Levenshtein Distance
-Library: thefuzz
+## 🧠 NLP (Natural Language Processing)
 
-###How it works:
+**Technology Used:** Fuzzy Logic / Levenshtein Distance  
+**Library:** `thefuzz`
 
--The Problem: Humans are inconsistent. If the script says "Yes, please", but the user says "Yeah, please" or "Yes please", a strict code check (if user == expected) would fail.
--The Solution: We use Fuzzy Matching. This algorithm calculates the "Levenshtein Distance"—essentially counting how many edits (insertions, deletions, or substitutions) it takes to turn the user's sentence into the expected sentence.
+### How it works:
+- **The Problem:** Humans speak with variations. If the expected line is “Yes, please,” the user might say:
+  - “Yeah, please”  
+  - “Yes please”  
+  - “Yes, plz”  
+  Strict comparison (`user == expected`) would fail.  
+- **The Solution:** Fuzzy Matching calculates the **Levenshtein Distance**, i.e., the number of edits (insertions, deletions, substitutions) needed to transform one sentence into another.  
+- **The Threshold:**  
+  - If **Similarity Score ≥ 80** → Response is marked **Correct**  
+  - If **Similarity Score < 80** → App asks the user to **try again**  
 
--The Threshold: The app calculates a similarity score from 0 to 100.
-
-If Score >= 80: The app marks it as Correct.
-If Score < 80: The app marks it as Incorrect and asks to retry.
