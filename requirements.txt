@@ -1,0 +1,7 @@
+flet
+edge-tts
+openai-whisper
+SpeechRecognition
+pygame
+thefuzz
+pyaudio
