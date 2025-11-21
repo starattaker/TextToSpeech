@@ -73,3 +73,43 @@ source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
+
+#Launch App
+python app.py
+```
+##👂 STT (Speech-to-Text)
+
+Technology Used: OpenAI Whisper (Base Model)
+Library: openai-whisper + SpeechRecognition
+
+###How it works:
+-Capture: When the user clicks the recording icon, the SpeechRecognition library activates the microphone and listens for voice input.
+-Save: The captured audio is temporarily saved as a .wav file in the system's temp folder.
+-Transcribe: The Python script passes this .wav file to the Whisper Model. Whisper is a deep learning model trained on 680,000 hours of multilingual data. It analyzes the audio waveforms and converts them into a text string (e.g., "Yes, please").
+-Result: This text string is returned to the main app for checking.
+
+##🗣️ TTS (Text-to-Speech)
+
+###Technology Used: Microsoft Edge Neural Voices
+Library: edge-tts + pygame
+
+###How it works:
+
+-Request: When the AI needs to speak (e.g., "Excuse me, Madam"), the app sends this text to the edge-tts library.
+-Generation: edge-tts communicates with Microsoft's online Neural TTS service (the same one used in the Edge browser's "Read Aloud" feature). This generates a high-quality, human-like audio stream.
+-Playback: The audio is saved as a temporary .mp3 file. To avoid opening visible media players (like Windows Media Player), we use pygame.mixer, which is a game audio engine. It plays the file invisibly in the background.
+
+##🧠 NLP (Natural Language Processing)
+
+Technology Used: Fuzzy Logic / Levenshtein Distance
+Library: thefuzz
+
+###How it works:
+
+-The Problem: Humans are inconsistent. If the script says "Yes, please", but the user says "Yeah, please" or "Yes please", a strict code check (if user == expected) would fail.
+-The Solution: We use Fuzzy Matching. This algorithm calculates the "Levenshtein Distance"—essentially counting how many edits (insertions, deletions, or substitutions) it takes to turn the user's sentence into the expected sentence.
+
+-The Threshold: The app calculates a similarity score from 0 to 100.
+
+If Score >= 80: The app marks it as Correct.
+If Score < 80: The app marks it as Incorrect and asks to retry.
